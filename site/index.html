@@ -1,18 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Snake 2</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
-
-    <style>
-        body {
-            text-align: center;
-        }
-    </style>
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
 </head>
-<body>
-    <h1>Site 2</h1>
+
+
+<body style="text-align: center; " >
+
+    <h1 style="text-align:center; text-shadow: 5px;">Snake Game</h1>
+    <p style="font-family: 'Verdana', Courier, monospace; ">
+        SnakeGame in LSD Style
+
+    <a href="../index.html"> Go back to non-LSD </a>
+
+
+    <p id="highscoreDisplay">Highscore: 0</p>
+
+    <canvas id="canvas" width="480" height="480"></canvas>
+    <script>
+        
+        
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+
+        let rows = 20;
+        let cols = 20;
+        let snake = [{ x: 9, y: 3 }];
+        let food;
+        let cellWidth = canvas.width / cols;
+        let cellHeight = canvas.height / rows;
+        let direction = 'LEFT';
+
+        let foodCollected = false;
+
+        let kaunter = 0; //score
+
+        let highscore = 0; //Highscore for the Game until reload
+
+        placeFood();
+
+        setInterval(gameLoop, 100); //rufe alle 100 ms Funktion gameLoop auf
+
+        draw();
+
+        function draw() {
+
+            //set color of html element
+            document.body.style.backgroundColor = "hsl(" + 360 * Math.random() + ", 50%, 50%)";
+
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+
+            snake.forEach(part => add(part.x, part.y));
+
+            //ctx.fillStyle = 'lightgreen';
+            ctx.fillStyle = 'hsl(' + 360 * Math.random() + ', 50%, 50%)'; //LSD-Äpfel
+            add(food.x, food.y)
+
+            drawKaunter();
+            drawHighscore();
+
+
+
+            requestAnimationFrame(draw); //Funktion wird immer wieder aufgerufen, sobald Browser bereit ist
+            document.addEventListener('keydown', keyDown); //Funktion keydown wird ausgeführt sobald wir beliebige Taste drücken
+
+        }
+
+        function add(x, y) {
+            ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth - 1, cellHeight - 1);
+        }
+
+        function placeFood() { //Platziere Futter
+            //Math.random gibt random Zahl zwischen 0 und 1 zurück, diese multiplizieren wir mit der Grösse des Feldes und runden die Zahl ganz ab
+            let randX = Math.floor(Math.random() * cols);
+            let randY = Math.floor(Math.random() * roiws);
+
+            food = { x: randX, y: randY };
+        }
+
+        function shiftSnake() {
+            for (let i = snake.length - 1; i > 0; i--) {
+                const part = snake[i];
+                const lastPart = snake[i - 1];
+                part.x = lastPart.x; //Kopie nach drüben
+                part.y = lastPart.y;
+
+            }
+        }
+
+        function gameover() {
+            // Out of Bounds & Eating myself
+            let firstPart = snake[0];
+            let otherParts = snake.slice(1); //Array ohne erstes Teil
+            let duplicatePart = otherParts.find(part => part.x == firstPart.x && part.y == firstPart.y)
+
+            if (snake[0].x < 0 || snake[0].x > cols - 1 || snake[0].y < 0 || snake[0].y > rows - 1 || duplicatePart) {
+
+                // alert("Game over!"); //Kreiiert dieses Nice Error-Feld, dass man wegklicken muss
+                //log gameover in console
+                console.log("Game over!" + " Time: " + Date() + " Score: " + kaunter);
+
+                //Restart
+                //hishscore = ((highscore < kaunter) ?  kaunter : highscore);
+                if (highscore < kaunter) highscore = kaunter;
+
+                kaunter = 0; //Reset kauntery
+                placeFood();
+                snake = [{ x: 9, y: 3 }];
+                direction = 'LEFT';
+            }
+
+
+
+        }
+
+
+
+        function drawKaunter() {
+            ctx.fillStyle = "white" //textcolour
+            ctx.font = "13px verdena"//set font size to 10px of font family verdena
+            ctx.fillText("Score " + kaunter, canvas.clientWidth - 50, 10); //position
+        }
+
+        function drawHighscore() {
+            document.getElementById("highscoreDisplay").innerText = "Highscore: " + highscore;
+            // ctx.fillStyle = "red" //textcolour
+            // ctx.font = "13px verdena"
+            //ctx.fillText("Highscore " + highscore, canvas.clientWidth+10, 10)
+        }
+
+        function gameLoop() {
+
+            gameover();
+
+            if (foodCollected) { //Füge weiteres Glied an
+                snake = [{ x: snake[0].x, y: snake[0].y }, ...snake];
+                foodCollected = false; //Aktualisiere Variable, da sonst immer ergänzt wird
+
+            }
+
+            shiftSnake(); //Bewege Schlange
+
+            if (direction == 'LEFT') {
+                snake[0].x--;
+            }
+            if (direction == 'RIGHT') {
+                snake[0].x++;
+            }
+            if (direction == 'UP') {
+                snake[0].y--;
+            }
+            if (direction == 'DOWN') {
+                snake[0].y++;
+            }
+
+            if (snake[0].x == food.x && snake[0].y == food.y) { //Überprüfe ob Schlange Futter isst
+                //Futter einsammeln
+                foodCollected = true;
+                kaunter++; //Increase kaunter as we ate food
+
+                //Futter neu platzieren
+                placeFood();
+
+            }
+
+
+            drawKaunter();
+            //drawHighscore();
+
+
+        }
+
+        function keyDown(e) { //Gedrücke Tasten ändern Variable Directions um nachher Richtung zu verändern
+            if (e.keyCode == 37) {
+                direction = 'LEFT';
+            }
+            if (e.keyCode == 38) {
+                direction = 'UP';
+            }
+            if (e.keyCode == 39) {
+                direction = 'RIGHT';
+            }
+            if (e.keyCode == 40) {
+                direction = 'DOWN';
+            }
+        }
+
+    </script>
+
+
 </body>
+
+
 </html>
