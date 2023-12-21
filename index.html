@@ -98,7 +98,9 @@
 
             if (snake[0].x < 0 || snake[0].x > cols - 1 || snake[0].y < 0 || snake[0].y > rows - 1 || duplicatePart) {
 
-                alert("Game over!"); //Kreiiert dieses Nice Error-Feld, dass man wegklicken muss
+                // alert("Game over!"); //Kreiiert dieses Nice Error-Feld, dass man wegklicken muss
+                //log gameover in console
+                console.log("Game over!");
 
                 //Restart
                 //hishscore = ((highscore < kaunter) ?  kaunter : highscore);
