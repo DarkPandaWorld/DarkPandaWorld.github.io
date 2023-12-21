@@ -49,8 +49,7 @@
 
         function draw() {
 
-            //set color of html element
-            // document.body.style.backgroundColor = "hsl(" + 360 * Math.random() + ", 50%, 50%)";
+            
 
 
             ctx.fillStyle = 'black';
@@ -80,7 +79,7 @@
         function placeFood() { //Platziere Futter
             //Math.random gibt random Zahl zwischen 0 und 1 zurück, diese multiplizieren wir mit der Grösse des Feldes und runden die Zahl ganz ab
             let randX = Math.floor(Math.random() * cols);
-            let randY = Math.floor(Math.random() * roiws);
+            let randY = Math.floor(Math.random() * rows);
 
             food = { x: randX, y: randY };
         }
