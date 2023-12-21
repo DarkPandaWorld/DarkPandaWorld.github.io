@@ -53,13 +53,15 @@ Have Fun :)
             snake.forEach(part => add(part.x, part.y));
 
             //ctx.fillStyle = 'lightgreen';
-            ctx.fillStyle = 'hsl(' + 360 * Math.random() + ', 50%, 50%)'; //LSD-Äpfel
+            ctx.fillStyle = food.color; //LSD-Äpfel
             add(food.x ,food.y)
 
             drawKaunter();
             drawHighscore();
 
-            requestAnimationFrame(draw);
+
+            
+            requestAnimationFrame(draw); //Funktion wird immer wieder aufgerufen, sobald Browser bereit ist
             document.addEventListener('keydown', keyDown); //Funktion keydown wird ausgeführt sobald wir beliebige Taste drücken
 
         }
@@ -73,7 +75,7 @@ Have Fun :)
             let randX = Math.floor(Math.random() * cols);
             let randY = Math.floor(Math.random() * rows);
 
-            food = {x: randX, y: randY};
+            food = {x: randX, y: randY, color: 'hsl(' + 360 * Math.random() + ', 50%, 50%)'};
         }
 
         function shiftSnake(){
