@@ -23,10 +23,6 @@
     <canvas id="canvas" width="480" height="480"></canvas>
     <script>
 
-        document.body.style.backgroundColor = "hsl(" + 360 * Math.random() + ", 50%, 50%)";
-
-
-
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
 
@@ -51,9 +47,7 @@
         draw();
 
         function draw() {
-
-
-
+            document.body.style.backgroundColor = "hsl(" + 360 * Math.random() + ", 50%, 50%)";
 
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
