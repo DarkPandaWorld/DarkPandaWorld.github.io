@@ -134,8 +134,7 @@ Have Fun :)
                 foodCollected = false; //Aktualisiere Variable, da sonst immer ergänzt wird
                 
             }
-            
-            shiftSnake(); //Bewege Schlange
+        
 
             if(direction == 'LEFT'){
                 snake[0].x--;
@@ -149,6 +148,8 @@ Have Fun :)
             if(direction == 'DOWN'){
                 snake[0].y++;
             }
+
+            shiftSnake(); //Bewege Schlange
             
             if(snake[0].x == food.x && snake[0].y == food.y){ //Überprüfe ob Schlange Futter isst
                 //Futter einsammeln
